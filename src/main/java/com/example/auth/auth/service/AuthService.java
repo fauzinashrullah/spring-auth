@@ -1,5 +1,6 @@
 package com.example.auth.auth.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import com.example.auth.auth.dto.AuthResponse;
 import com.example.auth.auth.dto.LoginRequest;
 import com.example.auth.auth.dto.RegisterRequest;
 import com.example.auth.auth.jwt.JwtService;
-import com.example.auth.exception.EmailAlreadyUsedException;
+import com.example.auth.exception.CustomException;
 import com.example.auth.repository.UserRepository;
 import com.example.auth.user.User;
 
@@ -27,7 +28,7 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest request){
         if (repository.findByEmail(request.getEmail()).isPresent()){
-            throw new EmailAlreadyUsedException("Email already used");
+            throw new CustomException(HttpStatus.CONFLICT, "Conflict", "Email already in use");
         }else{
             User user = new User(
                 request.getName(), request.getEmail(), 
@@ -41,7 +42,8 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request){
         User user = repository.findByEmail(request.getEmail())
-            .orElseThrow((() -> new RuntimeException("User not found")));
+            .orElseThrow((() -> new CustomException
+            (HttpStatus.NOT_FOUND, "User not found", "No user found with email: " + request.getEmail())));
         
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new RuntimeException("Invalid credentials");
