@@ -1,39 +1,47 @@
 package com.example.auth.auth.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.auth.auth.dto.AuthResponse;
-import com.example.auth.auth.dto.LoginRequest;
-import com.example.auth.auth.dto.RegisterRequest;
-import com.example.auth.auth.service.AuthService;
-
+import java.util.List;
+import com.example.auth.auth.dto.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.*;
+import com.example.auth.auth.service.AuthService;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class AuthController {
     
     private final AuthService service;
 
-    public AuthController(AuthService service){
-        this.service = service;
-    }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
         AuthResponse response = service.register(request);
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         AuthResponse response = service.login(request);
         return ResponseEntity.ok(response);
     }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/admin/users")
+    public List<UserResponse> getAllUsers() {
+        return service.getAllUsers();
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
+    @GetMapping("/user/profile")
+    public UserResponse profile() {
+        return service.getProfile();
+    }
+    
+    
+    
     
     
 }

@@ -1,14 +1,16 @@
 package com.example.auth.auth.dto;
 
+import java.util.Set;
+
 import com.example.auth.user.Role;
 
 public class RegisterRequest {
     private String name;
     private String email;
     private String password;
-    private Role role;
+    private Set<Role> role;
 
-    public RegisterRequest(String name, String email, String password, Role role){
+    public RegisterRequest(String name, String email, String password, Set<Role> role){
         this.name = name;
         this.email = email;
         this.password = password;
@@ -21,7 +23,7 @@ public class RegisterRequest {
         return email;
     }public String getPassword() {
         return password;
-    }public Role getRole() {
+    }public Set<Role> getRole() {
         return role;
     }
 }

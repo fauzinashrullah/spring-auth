@@ -1,7 +1,12 @@
 package com.example.auth.user;
 
-import jakarta.persistence.*;
+import java.util.Set;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+@NoArgsConstructor
+@Getter
 @Entity
 @Table(name = "users")
 public class User {
@@ -17,27 +22,14 @@ public class User {
 
     private String password;
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Set<Role> role;
 
-    public User(){};
-
-    public User(String name, String email, String password, Role role){
+    public User(String name, String email, String password, Set<Role> role){
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
-    }
-
-    public Long getId() {
-        return id;
-    }public String getName() {
-        return name;
-    }public String getEmail() {
-        return email;
-    }public String getPassword() {
-        return password;
-    }public Role getRole() {
-        return role;
     }
 }
