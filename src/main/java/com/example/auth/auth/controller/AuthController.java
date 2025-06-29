@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.auth.auth.service.AuthService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @RestController
 @RequestMapping("/api")
@@ -36,8 +38,8 @@ public class AuthController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/user/profile")
-    public UserResponse profile() {
-        return service.getProfile();
+    public UserResponse profile(@AuthenticationPrincipal UserDetails userDetails) {
+        return service.getProfile(userDetails);
     }
     
     

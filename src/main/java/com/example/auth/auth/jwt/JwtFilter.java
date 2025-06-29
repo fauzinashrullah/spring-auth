@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,6 +27,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private JwtService jwtService;
+    private UserDetailsService userDetailsService;
     @Override
     protected void doFilterInternal(
         @NonNull HttpServletRequest request,
@@ -41,13 +44,15 @@ public class JwtFilter extends OncePerRequestFilter {
                         .getBody();
 
                     String email = claims.getSubject();
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
                     List<String> roles = claims.get("roles", List.class);
 
                     List<GrantedAuthority> authorities = roles.stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-                    Authentication auth = new UsernamePasswordAuthenticationToken(email, null, authorities);
+                    Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(auth);
                     
                 } catch (Exception e) {

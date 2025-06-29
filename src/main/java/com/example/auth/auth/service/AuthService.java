@@ -4,28 +4,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.auth.auth.dto.AuthResponse;
-import com.example.auth.auth.dto.LoginRequest;
-import com.example.auth.auth.dto.RegisterRequest;
-import com.example.auth.auth.dto.UserResponse;
+import com.example.auth.auth.dto.*;
 import com.example.auth.auth.jwt.JwtService;
 import com.example.auth.exception.CustomException;
 import com.example.auth.repository.UserRepository;
 import com.example.auth.user.User;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -36,7 +27,6 @@ public class AuthService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
-    private final HttpServletRequest request;
 
     
 
@@ -74,9 +64,8 @@ public class AuthService {
             .collect(Collectors.toList());
     }
 
-    public UserResponse getProfile(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
+    public UserResponse getProfile(UserDetails userDetails){
+        String email = userDetails.getUsername();
         User user = repository.findByEmail(email).orElseThrow(
             () -> new CustomException(HttpStatus.NOT_FOUND, "User not found", "No user found with email: " + email)
         );
