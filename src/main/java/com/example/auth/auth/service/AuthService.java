@@ -51,7 +51,7 @@ public class AuthService {
             (HttpStatus.NOT_FOUND, "User not found", "No user found with email: " + request.getEmail())));
         
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
-            throw new RuntimeException("Invalid credentials");
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "Invalid login", "Password does not match");
         }else{
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
             return new AuthResponse(jwtService.generateToken(userDetails));
