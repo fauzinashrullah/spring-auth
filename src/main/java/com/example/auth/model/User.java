@@ -1,4 +1,4 @@
-package com.example.auth.user;
+package com.example.auth.model;
 
 import java.util.Set;
 

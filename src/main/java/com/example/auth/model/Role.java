@@ -1,4 +1,4 @@
-package com.example.auth.user;
+package com.example.auth.model;
 
 public enum Role {
     ROLE_USER,

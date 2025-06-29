@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.auth.auth.jwt.JwtFilter;
+import com.example.auth.exception.CustomAccessDeniedHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
             )
+            .exceptionHandling(ex -> ex
+            .accessDeniedHandler(new CustomAccessDeniedHandler()))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

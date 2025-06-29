@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import com.example.auth.auth.dto.*;
 import com.example.auth.auth.jwt.JwtService;
 import com.example.auth.exception.CustomException;
+import com.example.auth.model.User;
 import com.example.auth.repository.UserRepository;
-import com.example.auth.user.User;
 
 import lombok.RequiredArgsConstructor;
 
