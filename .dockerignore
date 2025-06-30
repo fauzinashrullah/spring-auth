@@ -1,0 +1,20 @@
+target/
+build/
+
+# File binary atau JAR
+*.jar
+
+# File setting editor
+*.iml
+.idea/
+.vscode/
+
+# File log
+*.log
+
+# File OS
+.DS_Store
+Thumbs.db
+
+# Credentials 
+.env
