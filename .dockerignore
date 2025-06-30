@@ -1,7 +1,4 @@
 
-# File binary atau JAR
-*.jar
-
 # File setting editor
 *.iml
 .idea/
@@ -16,3 +13,6 @@ Thumbs.db
 
 # Credentials 
 .env
+
+**/__pycache__/
+**/*.class
