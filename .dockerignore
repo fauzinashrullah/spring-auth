@@ -1,15 +1,14 @@
-
-# File setting editor
+# Editor/IDE
+.idea
+.vscode
 *.iml
-.idea/
-.vscode/
 
-# File log
-*.log
-
-# File OS
+# System files
 .DS_Store
 Thumbs.db
 
-# Credentials 
+# Log
+*.log
+
+# Secrets
 .env
