@@ -13,6 +13,3 @@ Thumbs.db
 
 # Credentials 
 .env
-
-**/__pycache__/
-**/*.class
