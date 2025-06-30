@@ -1,5 +1,3 @@
-target/
-build/
 
 # File binary atau JAR
 *.jar
